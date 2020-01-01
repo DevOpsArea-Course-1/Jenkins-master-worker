@@ -1,0 +1,22 @@
+version: "2"
+services:
+  master:
+    image: eeacms/jenkins-master
+    ports:
+    - "80:8080"
+    - "50000:50000"
+    volumes:
+    - ./jenkins-master:/var/jenkins_home
+
+  worker:
+    image: eeacms/jenkins-slave
+    restart: always
+    environment:
+      JENKINS_MASTER: "http://master:8080"
+      JENKINS_NAME: "worker"
+      JENKINS_USER: "devops"
+      JENKINS_PASS: "devops"
+      JENKINS_RETRY: "10"
+    volumes:
+    - ./jenkins-worker:/var/jenkins_home/worker
+
